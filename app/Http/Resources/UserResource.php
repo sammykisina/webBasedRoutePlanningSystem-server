@@ -15,6 +15,13 @@ class UserResource extends JsonResource {
             'attributes' => [
                 'name' => $this->name,
                 'email' => $this->email
+            ],
+            'relationships' => [
+                'paths' => PathResource::collection(
+                    resource: $this->whenLoaded(
+                        relationship: 'paths'
+                    )
+                )
             ]
         ];
     }

@@ -9,10 +9,10 @@ use Illuminate\Foundation\Http\FormRequest;
 class ForgotPasswordRequest extends FormRequest {
     public function rules(): array {
         return [
-            'email' => [
+            'userId' => [
                 'required',
-                'email',
-                'exists:users,email'
+                'number',
+                'exists:users,id'
             ]
         ];
     }

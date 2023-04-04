@@ -2,28 +2,37 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Authenticated;
+namespace App\Http\Requests\Auth;
 
+use App\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 
-class UpdatePasswordRequest extends FormRequest {
+class RegisterRequest extends FormRequest {
     public function rules(): array {
         return [
-            'userId' => [
+            'name' => [
                 'required',
-                'numeric',
-                'exists:users,id'
+                'string',
+            ],
+            'email' => [
+                'required',
+                'email',
+                'unique:users,email'
             ],
             'password' => [
                 'required',
-                'string'
             ]
         ];
     }
-    public function getUpdatedPasswordData(): array {
+
+    public function getNewUserData(): array {
         $data = $this->validated();
+        $role = Role::query()->where('slug', 'user')->first();
+
         $data['password']  = Hash::make(value: $data['password']);
+        $data['role_id'] = $role->id;
+
         return $data;
     }
 }

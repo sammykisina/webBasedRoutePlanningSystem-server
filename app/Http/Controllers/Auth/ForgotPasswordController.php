@@ -15,7 +15,7 @@ class ForgotPasswordController extends Controller {
     public function __invoke(
         ForgotPasswordRequest $request
     ): JsonResponse {
-        $user = User::query()->where('email', $request->get(key: 'email'))->first();
+        $user = User::query()->where('id', $request->get(key: 'userId'))->first();
 
         $user->generateTwoFactorCode();
         $user->notify(new ForgotPassword);
